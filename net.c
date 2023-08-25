@@ -91,14 +91,14 @@ int net_device_add_iface(struct net_device *dev, struct net_iface *iface) {
             errorf("already exists, dev=%s, family=%d", dev->name,
                    entry->family);
             return -1;
-            }
+        }
     }
-        iface->dev = dev;
-        /* Excercise 7-1*/
-        iface->next = dev->ifaces;
-        dev->ifaces = iface;
-        /* end of 7-1*/
-        return 0;
+    iface->dev = dev;
+    /* Excercise 7-1*/
+    iface->next = dev->ifaces;
+    dev->ifaces = iface;
+    /* end of 7-1*/
+    return 0;
 }
 
 struct net_iface *net_device_get_iface(struct net_device *dev, int family) {
@@ -237,6 +237,7 @@ void net_shutdown(void) {
 }
 
 #include "ip.h"
+#include "icmp.h"
 
 int net_init(void) {
     if (intr_init() == -1) {
@@ -248,5 +249,10 @@ int net_init(void) {
         return -1;
     }
     infof("initialized");
+
+    if (icmp_init() == -1) {
+        errorf("icmp_init() failure");
+        return -1;
+    }
     return 0;
 }
