@@ -2,7 +2,11 @@
     "files.associations": {
         "loopback.h": "c",
         "stdio.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "stdlib.h": "c",
+        "platform.h": "c",
+        "net.h": "c",
+        "ip.h": "c"
     },
     "C_Cpp.clang_format_style": "{BasedOnStyle: Google, IndentWidth: 4}"
 }
