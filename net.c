@@ -186,7 +186,7 @@ int net_input_handler(uint16_t type, const uint8_t *data, size_t len,
             return 0;
         }
     }
-    /* unsupported protocol */
+        /* unsupported protocol */
     return 0;
 }
 

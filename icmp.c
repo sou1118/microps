@@ -2,9 +2,12 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "ip.h"
 #include "util.h"
+
+#define ICMP_BUFSIZ IP_PAYLOAD_SIZE_MAX
 
 struct icmp_hdr {
     uint8_t type;
@@ -100,6 +103,57 @@ void icmp_input(const uint8_t *data, size_t len, ip_addr_t src, ip_addr_t dst,
     debugf("%s => %s, len=%zu", ip_addr_ntop(src, addr1, sizeof(addr1)),
            ip_addr_ntop(dst, addr2, sizeof(addr2)), len);
     icmp_dump(data, len);
+    switch (hdr->type) {
+        case ICMP_TYPE_ECHO:
+            /* Responds with the address of the received interface. */
+            // The ICMP header is at the start of the packet.
+
+            // The ICMP payload is after the header.
+            uint8_t *payload = (uint8_t *)(hdr + 1);
+
+            // The length of the ICMP payload is the length of the
+            // packet minus the length of the header.
+            uint32_t payload_len = len - sizeof(*hdr);
+
+            // Send the ICMP packet.
+            icmp_output(ICMP_TYPE_ECHOREPLY, hdr->code,
+                        hdr->values, payload, payload_len,
+                        iface->unicast, src);
+
+            break;
+        default:
+            /* ignore */
+            break;
+    }
+}
+
+int icmp_output(uint8_t type, uint8_t code, uint32_t values,
+                const uint8_t *data, size_t len, ip_addr_t src, ip_addr_t dst) {
+    uint8_t buf[ICMP_BUFSIZ];
+    struct icmp_hdr *hdr;
+    size_t msg_len;
+    char addr1[IP_ADDR_STR_LEN];
+    char addr2[IP_ADDR_STR_LEN];
+
+    hdr = (struct icmp_hdr *)buf;
+    /* 1. Initialize the ICMP header. */
+    hdr->type = type;
+    hdr->code = code;
+    hdr->sum = 0;
+    hdr->values = values;
+
+    /* 2. Copy the ICMP message to the packet. */
+    memcpy(hdr + 1, data, len);
+
+    /* 3. Compute the ICMP checksum. */
+    msg_len = sizeof(*hdr) + len;
+    hdr->sum = cksum16((uint16_t *)hdr, msg_len, 0);
+
+    /* 4. Send the packet. */
+    debugf("%s => %s, len=%zu", ip_addr_ntop(src, addr1, sizeof(addr1)),
+           ip_addr_ntop(dst, addr2, sizeof(addr2)), msg_len);
+    icmp_dump(buf, msg_len);
+    return ip_output(IP_PROTOCOL_ICMP, buf, msg_len, src, dst);
 }
 
 int icmp_init(void) {
