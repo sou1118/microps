@@ -111,9 +111,8 @@ struct net_iface *net_device_get_iface(struct net_device *dev, int family) {
         if (entry->family != family) {
             return NULL;
         }
-        return entry;
     }
-    return 0;
+    return entry;
 }
 
 int net_device_output(struct net_device *dev, uint16_t type,
@@ -187,7 +186,6 @@ int net_input_handler(uint16_t type, const uint8_t *data, size_t len,
             return 0;
         }
     }
-    return 0;
 }
 
 int net_softirq_handler(void) {
@@ -248,11 +246,11 @@ int net_init(void) {
         errorf("ip_init() failure");
         return -1;
     }
-    infof("initialized");
 
     if (icmp_init() == -1) {
         errorf("icmp_init() failure");
         return -1;
     }
+    infof("initialized");
     return 0;
 }

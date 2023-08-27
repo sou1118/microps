@@ -6,7 +6,8 @@
         "stdlib.h": "c",
         "platform.h": "c",
         "net.h": "c",
-        "ip.h": "c"
+        "ip.h": "c",
+        "icmp.h": "c"
     },
     "C_Cpp.clang_format_style": "{BasedOnStyle: Google, IndentWidth: 4}"
 }
