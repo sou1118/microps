@@ -8,7 +8,8 @@
         "net.h": "c",
         "ip.h": "c",
         "icmp.h": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "arp.h": "c"
     },
     "C_Cpp.clang_format_style": "{BasedOnStyle: Google, IndentWidth: 4}"
 }
