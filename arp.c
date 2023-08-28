@@ -119,7 +119,7 @@ static void arp_input(const uint8_t *data, size_t len, struct net_device *dev) {
     iface = net_device_get_iface(dev, NET_IFACE_FAMILY_IP);
     if (iface && ((struct ip_iface *)iface)->unicast == tpa) {
         if (ntoh16(msg->hdr.op) == ARP_OP_REQUEST) {
-            arp_reply(iface, msg->sha, spa, msg->tha);
+            arp_reply(iface, msg->sha, spa, msg->sha);
         }
     }
 }
