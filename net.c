@@ -287,6 +287,7 @@ void net_shutdown(void) {
 
 #include "icmp.h"
 #include "ip.h"
+#include "udp.h"
 
 int net_init(void) {
     if (intr_init() == -1) {
@@ -304,6 +305,10 @@ int net_init(void) {
 
     if (icmp_init() == -1) {
         errorf("icmp_init() failure");
+        return -1;
+    }
+    if (udp_init() == -1) {
+        errorf("udp_init() failure");
         return -1;
     }
     infof("initialized");
