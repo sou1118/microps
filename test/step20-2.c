@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
             break;
         }
         if (udp_sendto(soc, buf, strlen((char *)buf), &foreign) == -1) {
-            errorf("sock_sendto() failure");
+            errorf("udp_sendto() failure");
             break;
         }
     }

@@ -210,8 +210,8 @@ ssize_t udp_output(struct ip_endpoint *src, struct ip_endpoint *dst,
         return -1;
     }
     hdr = (struct udp_hdr *)buf;
-    hdr->src = hton16(src->port);
-    hdr->dst = hton16(dst->port);
+    hdr->src = src->port;
+    hdr->dst = dst->port;
     hdr->len = hton16(sizeof(*hdr) + len);
     hdr->sum = 0;
     memcpy(hdr + 1, data, len);
