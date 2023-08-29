@@ -10,7 +10,8 @@
         "icmp.h": "c",
         "stddef.h": "c",
         "arp.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "udp.h": "c"
     },
     "C_Cpp.clang_format_style": "{BasedOnStyle: Google, IndentWidth: 4}"
 }
