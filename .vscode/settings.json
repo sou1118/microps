@@ -12,7 +12,8 @@
         "arp.h": "c",
         "time.h": "c",
         "udp.h": "c",
-        "cstdint": "c"
+        "cstdint": "c",
+        "types.h": "c"
     },
     "C_Cpp.clang_format_style": "{BasedOnStyle: Google, IndentWidth: 4}"
 }
